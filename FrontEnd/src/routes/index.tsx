@@ -1,0 +1,32 @@
+import { useTheme, Box } from 'native-base';
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { AuthRoutes } from "./auth.routes";
+import { useAuth } from '@hooks/useAuth';
+import { AppRoutes } from './app.routes';
+import { Loading } from '@components/Loading';
+
+export function Routes() {
+
+    const { colors } = useTheme();
+
+    const { user, isLoadingUserStorageData } = useAuth();
+
+    const theme = DefaultTheme;
+    theme.colors.background = colors.gray[700];
+
+    if (isLoadingUserStorageData) { // se for false colcoar o loading  p quando a pessoa abre e volta p app 
+        return <Loading />
+    }
+
+    return (
+        <Box flex={1} bg='gray.700'>
+            <NavigationContainer theme={theme}>
+
+                {
+                    user.id ? <AppRoutes /> : <AuthRoutes />//se tiver algo dentro do obj colocar as rotas se n 
+                }
+
+            </NavigationContainer>
+        </Box>
+    );
+}
